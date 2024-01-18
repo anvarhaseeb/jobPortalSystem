@@ -1,0 +1,43 @@
+
+JPS=JOB PORTAL SYSTEM
+invoice=Invoice of Job Applications
+Company=Company Name
+Website=Website 
+Location=Location
+POD=Posting Date
+JobTitle=Job Title
+JobType=Job Type
+JobDetails=Job-Details
+CTC=CTC
+Skills=Skills
+JobLevel=Job Level
+Experience=Experience Required
+JobDescription=JobDescription
+JobCategory=Job Category
+welcome.message=Welcome to JOB PORTAL SYSTEM!
+jobdescription.messages=Explore By Category
+
+footer.message=JPS - JOB PORTAL SYSTEM, TO APPLY THE JOB/ © 2023 JPS Services Inc
+themes.header=Themes
+green=Green
+grey=Grey
+blue=Blue
+teal=Teal
+features.header=Features
+
+loading.content=Loading Contents . . .
+jobsearch.message=Job Search
+add.button=ADD
+back.button=BACK
+search.button=Search
+save.button=SAVE
+reset.button=Reset
+savereturn.button=SAVE & RETURN
+success=SUCCESS
+
+Warning=Warning
+
+req.Name=Requester Name
+job.Category=Job Category
+CompanyMail=Company Email
+error.invalid.option = Invalid {0} Option : {1}

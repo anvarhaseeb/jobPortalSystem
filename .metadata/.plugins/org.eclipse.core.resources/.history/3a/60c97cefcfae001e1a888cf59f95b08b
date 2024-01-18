@@ -1,0 +1,31 @@
+
+JPS=JOB PORTAL SYSTEM
+invoice=Invoice of Job Applications
+Company=Company Name
+Website=Website 
+Location=Location
+POD=Posting Date
+JobTitle=Job Title
+JobType=Job Type
+JobDetails=Job-Details
+CTC=CTC
+Skills=Skills
+JobLevel=Job Level
+Experience=Experience
+JobDescription=JobDescription
+
+welcome.message=Welcome to JOB PORTAL SYSTEM!
+jobdescription.messages=Explore By Category
+business.messages=Business Development
+
+
+loading.content=Loading Content
+jobsearch.message=Job Search
+add.button=ADD
+back.button=BACK
+search.button=Search
+
+req.Name=Requester Name
+job.Category=Job Category
+CompanyMail=Company Email
+error.invalid.option = Invalid {0} Option : {1}

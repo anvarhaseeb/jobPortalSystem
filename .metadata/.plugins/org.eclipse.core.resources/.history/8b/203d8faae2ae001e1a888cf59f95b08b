@@ -1,0 +1,46 @@
+JPS=SYSTEME DE PORTAIL D'EMPLOI
+invoice=Facture des candidatures
+Company=Nom de l'entreprise
+Website=Site Web de l'entreprise
+Location=Emplacement
+POD=Date de publication
+JobTitle=Titre du poste
+JobType=Type d'emploi
+JobDetails=Détails du poste
+CTC=CTC 
+CTCFrom=CTC De
+CTCTo=CTC À
+Skills=Compétences
+JobLevel=Niveau d'emploi
+Experience=Expérience requise
+JobDescription=Description du poste
+JobCategory=Catégorie d'emploi
+welcome.message=Bienvenue sur le SYSTEME DE PORTAIL D'EMPLOI!
+jobdescription.messages=Explorer par catégorie
+CompanyEmail=Email de l'entreprise
+
+footer.message=JPS - SYSTEME DE PORTAIL D'EMPLOI, POUR POSTULER À L'EMPLOI / © 2023 JPS Services Inc
+themes.header=Thèmes
+green=Vert
+grey=Gris
+blue=Bleu
+teal=Bleu-vert
+features.header=Fonctionnalités
+
+job=Emploi
+loading.content=Chargement du contenu. . .
+jobsearch.message=Recherche d'emploi
+add.button=AJOUTER
+back.button=RETOUR
+search.button=Rechercher
+save.button=ENREGISTRER
+reset.button=Réinitialiser
+savereturn.button=ENREGISTRER ET REVENIR
+success=RÉUSSI
+
+Warning=Avertissement
+JobList=Liste d'emplois
+req.Name=Nom du demandeur
+job.Category=Catégorie d'emploi
+CompanyMail=Email de l'entreprise
+error.invalid.option = Option {0} invalide : {1}

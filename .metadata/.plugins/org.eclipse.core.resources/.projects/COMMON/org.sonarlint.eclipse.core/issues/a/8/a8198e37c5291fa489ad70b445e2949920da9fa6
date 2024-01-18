@@ -1,0 +1,6 @@
+
+t
+java:S1444"9Make this "public static serviceLocalLocator" field final8§Ã§∫»1b 6859d39ec7f5fffb3ab28edb49a693deh
+ö
+java:S1104"_Make serviceLocalLocator a static final constant or non-public and provide accessors if needed.8§Ã§∫»1b 6859d39ec7f5fffb3ab28edb49a693deh
+ç	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.b 17ad27a9d99c891be07ff202e469242eh

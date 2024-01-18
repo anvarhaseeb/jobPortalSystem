@@ -1,0 +1,7 @@
+computeSourcePath=true
+configMode=serverFile
+contextsDir=C\:\\Users\\anvar\\Desktop\\Project\\apache-tomcat-8.5.97\\conf\\Catalina\\localhost
+eclipse.preferences.version=1
+tomcatConfigFile=C\:\\Users\\anvar\\Desktop\\Project\\apache-tomcat-8.5.97\\conf\\server.xml
+tomcatDir=C\:\\Users\\anvar\\Desktop\\Project\\apache-tomcat-8.5.97
+tomcatVersion=tomcatV8

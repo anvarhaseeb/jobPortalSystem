@@ -1,0 +1,544 @@
+/*JobAction.java=>an action class that between controller and front-end to do the job related actions*/
+package com.job.action;
+
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.SessionAware;
+import org.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.job.model.JobModel;
+import com.job.model.SkillsModel;
+import com.job.model.View;
+import com.kott.ejbx.JobModelValue;
+import com.kott.ejbx.SkillsModelValue;
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+import com.opensymphony.xwork2.interceptor.ValidationAware;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.HtmlExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+
+public class JobAction extends GenericAction implements ModelDriven<JobModel>,Preparable,SessionAware,ValidationAware{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final String EDIT = "Edit";
+	private static final String ADD = "Add";
+	private static final String SEARCH = "search";
+	private static final String CONTENT_DISPOSITION = "Content-Disposition";
+	private static final String ATTACHMENT_FILENAME =  "attachment;filename=";
+
+	private transient JobModel model ;
+	private transient JobModelValue modelValue;
+	private transient JSONArray jobListJSON ;
+	private transient Map<String, Object> session;
+	private static final Logger logger = LoggerFactory.getLogger(JobAction.class);
+
+
+	/*Home page*/
+	public String home() {
+		List<Object[]> countJobByCategory= getFacadeJobController().countJobByCategory();
+		List<JobModel>jobCount = new ArrayList<>();
+
+		for (Object[] countArray : countJobByCategory) {
+			JobModel jobModel = new JobModel();
+			jobModel.setCategory((String) countArray[0]);
+			jobModel.setCount((Long) countArray[1]);
+			jobCount.add(jobModel);
+		}
+		
+		model.setJobCounts(jobCount);
+		return SUCCESS;
+	}
+
+	/*to show searchPage*/
+	public String searchPage() {
+
+		try {
+			model.setSkillList(getSkillList());
+			return SUCCESS;
+		}catch (Exception e) {
+			logger.error("exception  viewing in the Database");
+			return ERROR;
+		}
+	}
+	/*signOut page*/
+	public String signOut() {
+		return SUCCESS;
+	}
+
+	/*make action as add method*/
+	public String addPage() {
+		model.setActionName("Add");
+		model.setSkillList(getSkillList());	
+		return SUCCESS;
+	}
+
+	/*  to delete the job*/
+	public String jobDelete() {
+		try {
+			modelValue.setJobId(model.getJobId());
+			String state  = getFacadeJobController().deleteJob(modelValue.getJobId());
+			if(SUCCESS.equals(state)) {
+				addActionMessage("The data deleted successfully");
+
+			}
+			model = (JobModel) session.get(SEARCH);
+			jobListJSON  = getSearch(model);
+			model.setJobListJson(jobListJSON);
+			return state;
+		} catch (Exception e) {
+			logger.error("exception in deleting the Database");
+			return ERROR;
+		}
+	}
+	/*change jobPost page as edit page*/
+	public String editPage() {
+		try {
+			model.setActionName("Edit");
+			modelValue.setJobId(model.getJobId());
+
+			modelValue  = getFacadeJobController().editPage(modelValue.getJobId());
+			model.setCategory(modelValue.getCategory());
+			model.setJobId(modelValue.getJobId());
+			model.setReqName(modelValue.getReqName());
+			model.setCmpWebsite(modelValue.getCmpWebsite());
+			model.setCmpName(modelValue.getCmpName());
+			model.setPostingDate(modelValue.getPostingDate());
+			model.setJobTitle(modelValue.getJobTitle());
+			model.setSkills(modelValue.getSkills());
+			model.setCtcFrom(modelValue.getCtcFrom());
+			model.setCtcTo(modelValue.getCtcTo());
+			model.setJobType(modelValue.getJobType());
+			model.setCmpEmail(modelValue.getCmpEmail());
+			model.setJobLevel(modelValue.getJobLevel());
+			model.setExperience(modelValue.getExperience());
+			model.setLocations(modelValue.getLocations());
+			model.setJobDescription(modelValue.getJobDescription());
+
+			model.setCategory(modelValue.getCategory());
+			model.setSkillList(getSkillList());
+			return SUCCESS;
+
+		}catch (Exception e) {
+			logger.error("exception in editing the Database");
+			return ERROR;
+
+		}
+	}
+
+	/* add method and edit method*/
+	public String action() {
+		try {
+			if(!validLogin()) {	
+				model.setSkillList(getSkillList());
+				return "input";
+			}
+			if(ADD.equals(model.getActionName())) {
+
+				modelValue.setReqName(model.getReqName());
+				modelValue.setCmpWebsite(model.getCmpWebsite());
+				modelValue.setCategory(model.getCategory());
+				modelValue.setCmpName(model.getCmpName());
+				modelValue.setPostingDate(model.getPostingDate());
+				modelValue.setJobTitle(model.getJobTitle());
+				modelValue.setSkills(model.getSkills());
+				modelValue.setCtcFrom(model.getCtcFrom());
+				modelValue.setCtcTo(model.getCtcTo());
+				modelValue.setJobType(model.getJobType());
+				modelValue.setCmpEmail(model.getCmpEmail());
+				modelValue.setJobLevel(model.getJobLevel());
+				modelValue.setExperience(model.getExperience());
+				modelValue.setLocations(model.getLocations());
+				modelValue.setJobDescription(model.getJobDescription());
+
+				String state  = getFacadeJobController().addJob(modelValue);
+				model.setSkillList(getSkillList());
+
+				if(SUCCESS.equals(state)) {
+					addActionMessage("The data inserted successfully");
+				}
+				return state;
+			}
+			else if(EDIT.equals(model.getActionName())) {
+				logger.info("in edit method");
+				modelValue.setJobId(model.getJobId());
+				modelValue.setReqName(model.getReqName());
+				modelValue.setCmpWebsite(model.getCmpWebsite());
+				modelValue.setCmpName(model.getCmpName());
+				modelValue.setPostingDate(model.getPostingDate());
+				modelValue.setJobTitle(model.getJobTitle());
+				modelValue.setSkills(model.getSkills());
+				modelValue.setCtcFrom(model.getCtcFrom());
+				modelValue.setCategory(model.getCategory());
+				modelValue.setCtcTo(model.getCtcTo());
+				modelValue.setJobType(model.getJobType());
+				modelValue.setCmpEmail(model.getCmpEmail());
+				modelValue.setJobLevel(model.getJobLevel());
+				modelValue.setExperience(model.getExperience());
+				modelValue.setLocations(model.getLocations());
+				modelValue.setJobDescription(model.getJobDescription());
+
+				String state  = getFacadeJobController().editJob(modelValue);
+				if(SUCCESS.equals(state)) {
+					addActionMessage("The data edited successfully");
+					model = (JobModel) session.get(SEARCH);
+					jobListJSON  = getSearch(model);
+
+					model.setJobListJson(jobListJSON);
+					return EDIT;
+				}
+			}
+
+			return ERROR;
+		} catch (Exception e) {
+			logger.error("exception in add/edit the Database");
+			return ERROR;
+		}
+	}
+
+	/*to show searchPage*/
+	public String search() {
+		try {
+			session.put(SEARCH, model);
+			jobListJSON  = getSearch(model);
+			model.setJobListJson(jobListJSON);
+			return SUCCESS;
+		} catch (Exception e) {
+			logger.error("exception in reading from the Database");
+			return ERROR;
+		}
+	}
+	/*used to retrieve the searched as json*/
+	public JSONArray getSearch (JobModel model) {
+		modelValue.setCmpName(model.getCmpName());
+		modelValue.setPostingDate(model.getPostingDate());
+		modelValue.setJobTitle(model.getJobTitle());
+		modelValue.setSkills(model.getSkills());
+		modelValue.setJobType(model.getJobType());
+		modelValue.setCategory(model.getCategory());
+		modelValue.setJobLevel(model.getJobLevel());
+		modelValue.setExperience(model.getExperience());
+		modelValue.setLocations(model.getLocations());
+		return  getFacadeJobController().search(modelValue);	
+	}
+
+	/*Method to view the job */
+	public String viewPage() {
+		try {	
+			modelValue.setJobId(model.getJobId());
+			modelValue =  getFacadeJobController().editPage(modelValue.getJobId());
+			List<JobModel> jobListModel = new ArrayList<>();
+
+			
+				model.setJobId(modelValue.getJobId());
+				model.setReqName(modelValue.getReqName());
+				model.setCmpWebsite(modelValue.getCmpWebsite());
+				model.setCmpName(modelValue.getCmpName());
+				model.setPostingDate(modelValue.getPostingDate());
+				model.setJobTitle(modelValue.getJobTitle());
+				model.setSkills(modelValue.getSkills());
+				model.setCtcFrom(modelValue.getCtcFrom());
+				model.setCtcTo(modelValue.getCtcTo());
+				model.setCategory(modelValue.getCategory());
+				model.setJobType(modelValue.getJobType());
+				model.setCmpEmail(modelValue.getCmpEmail());
+				model.setJobLevel(modelValue.getJobLevel());
+				model.setExperience(modelValue.getExperience());
+				model.setLocations(modelValue.getLocations());
+				model.setJobDescription(modelValue.getJobDescription());
+				jobListModel.add(model);
+		
+
+			model.setJobList(jobListModel);
+			return SUCCESS;
+		} catch (Exception e) {
+			logger.error("exception in viewing the Database");
+			return ERROR;
+		}
+	}
+
+	/*Method to goback to JobList page from viewPage */
+	public String cancel() {
+
+		model = (JobModel) session.get(SEARCH);
+		jobListJSON  = getSearch(model);
+		model.setJobListJson(jobListJSON);
+		return SUCCESS;
+	}
+	/*Method to download the data as pdf*/
+	public String reportDownload() throws JRException {
+
+		logger.info("reportDownload");
+		modelValue.setJobId(model.getJobId());
+
+		List<View> jasperList = new ArrayList<>();
+		List<JobModelValue> jobLists= getFacadeJobController().jobList(modelValue);
+		List<JobModel> jobListModel = new ArrayList<>();
+
+		jobLists.forEach(modelValues->{
+			JobModel models = new JobModel();
+			models.setJobId(modelValues.getJobId());
+			models.setReqName(modelValues.getReqName());
+			models.setCmpWebsite(modelValues.getCmpWebsite());
+			models.setCmpName(modelValues.getCmpName());
+			models.setPostingDate(modelValues.getPostingDate());
+			models.setJobTitle(modelValues.getJobTitle());
+			models.setSkills(modelValues.getSkills());
+			models.setCategory(modelValues.getCategory());
+			models.setCtcFrom(modelValues.getCtcFrom());
+			models.setCtcTo(modelValues.getCtcTo());
+			models.setJobType(modelValues.getJobType());
+			models.setCmpEmail(modelValues.getCmpEmail());
+			models.setJobLevel(modelValues.getJobLevel());
+			models.setExperience(modelValues.getExperience());
+			models.setLocations(modelValues.getLocations());
+			models.setJobDescription(modelValues.getJobDescription());
+			jobListModel.add(models);
+		});
+
+		View view = new View();
+		for (JobModel jModel : jobListModel) {
+			view.setReqName(jModel.getReqName());
+			view.setCmpWebsite(jModel.getCmpWebsite());
+			view.setCmpName(jModel.getCmpName());
+			view.setPostingDate(jModel.getPostingDate());
+			view.setJobTitle(jModel.getJobTitle());
+			view.setSkills(jModel.getSkills());
+			view.setCtcFrom(jModel.getCtcFrom());
+			view.setCategory(jModel.getCategory());
+			view.setCtcTo(jModel.getCtcTo());
+			view.setJobType(jModel.getJobType());
+			view.setCmpEmail(jModel.getCmpEmail());
+			view.setJobLevel(jModel.getJobLevel());
+			view.setExperience(jModel.getExperience());
+			view.setLocations(jModel.getLocations());
+			view.setJobDescription(jModel.getJobDescription());
+		}
+		view.setJobList(jobListModel);
+		jasperList.add(view);
+		/* converting to JRBeanCollectionDatasource */
+		JRBeanCollectionDataSource dataSource =  new JRBeanCollectionDataSource(jasperList);
+		Map<String, Object> parameters = new HashMap<>();
+
+		String lang = model.getLanguage();
+		ResourceBundle resourceBundle = getResourceBundle(lang);
+		parameters.put(JRParameter.REPORT_RESOURCE_BUNDLE, resourceBundle);
+
+		ServletContext servletContext = ServletActionContext.getServletContext();
+
+
+		String jasperDesignSubReport = servletContext.getRealPath("/WEB-INF/src/subreport1.jrxml");
+
+		/* compile jrxml to jasper */
+		/*subreport*/
+		String subReportName ="subreport1.jasper";
+		String outputFilePaths = "C:\\Users\\anvar\\"+subReportName;
+		JasperCompileManager.compileReportToFile(jasperDesignSubReport,outputFilePaths);
+
+		/* compile jrxml to jasper */
+		String jasperDesign = servletContext.getRealPath("/WEB-INF/src/report1.jrxml");
+
+		JasperReport mainReport = JasperCompileManager.compileReport(jasperDesign);
+		JasperPrint jasperPrint = JasperFillManager.fillReport(mainReport, parameters, dataSource);
+		return fileExporter(model.getReportType(),jasperPrint);
+
+	}
+
+	public ResourceBundle getResourceBundle(String lang) {
+		String country = "";
+		String bundle ="";
+		if (lang.equals("en")){
+			country ="EN";
+			bundle ="Bundle_en";
+
+		} else if (lang.equals("fr")) {
+			country ="FR";
+			bundle ="Bundle_fr";
+		} 
+		Locale local = new Locale(lang, country);
+		return ResourceBundle.getBundle(bundle, local);
+	}
+	private String fileExporter(String reportType, JasperPrint jasperPrint) {
+		try {
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis()); 
+			String formattedTimestamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSS").format(timestamp);
+			String downloadFilename = "jasperReport" + formattedTimestamp;
+			ServletOutputStream   outputStream = ServletActionContext.getResponse().getOutputStream();
+
+			if ("pdf".equals(reportType)) {
+
+				ServletActionContext.getResponse().setHeader(CONTENT_DISPOSITION, ATTACHMENT_FILENAME + downloadFilename + ".pdf");
+				ServletActionContext.getResponse().setContentType("application/pdf");
+				JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+
+			}
+			else if("excel".equals(reportType))  {
+
+				ServletActionContext.getResponse().setHeader(CONTENT_DISPOSITION, ATTACHMENT_FILENAME + downloadFilename + ".xlsx");
+				ServletActionContext.getResponse().setContentType("application/excel");
+
+				logger.info("excel downloading");
+
+				JRXlsxExporter exporter = new JRXlsxExporter();
+				exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+				exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+				exporter.exportReport();
+
+			}
+			else if("html".equals(reportType))  {
+				logger.info("html downloading");
+
+				ServletActionContext.getResponse().setHeader(CONTENT_DISPOSITION, ATTACHMENT_FILENAME + downloadFilename + ".html");
+				ServletActionContext.getResponse().setContentType("application/html");
+				HtmlExporter exporter = new HtmlExporter();
+				exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+				exporter.setExporterOutput(new SimpleHtmlExporterOutput(outputStream));
+				exporter.exportReport();
+			}
+			return null;
+		} catch (Exception e) {
+			logger.error("Exception in downloading data from the Database", e);
+			return ERROR;
+		} 
+	} 
+	/*skill List*/
+	public List<SkillsModel> getSkillList() {
+		List<SkillsModelValue> skillModelValueList= getFacadeJobController().viewSkills();
+
+		List<SkillsModel> skillModelList = new ArrayList<>();
+		skillModelValueList.forEach(modelValues->{
+			SkillsModel models = new SkillsModel();
+			models.setSkill_id(modelValues.getSkill_id());
+			models.setSkill_name(modelValues.getSkill_name());
+			skillModelList.add(models);
+		});
+		return skillModelList;
+
+	}
+	public boolean validLogin() {
+		boolean error=true;
+
+		if (StringUtils.isBlank(model.getReqName())) {
+			addActionError("Request name is empty");
+
+			error = false;
+		}
+
+		if (StringUtils.isBlank(model.getCmpName())) {
+			addActionError("Company name is empty");
+			error = false;
+		}
+
+		if (StringUtils.isBlank(model.getCmpWebsite())) {
+			addActionError( "Company website is empty");
+			error = false;
+		}
+
+		if (StringUtils.isBlank(model.getPostingDate())) {
+			addActionError( "Posting date is empty");
+			error = false;
+		}
+
+		if (StringUtils.isBlank(model.getJobTitle())) {
+			addActionError( "Job title is empty");
+			error = false;
+		}
+
+		if (StringUtils.isBlank(model.getCategory())) {
+			addActionError( "Job Category is empty");
+			error = false;
+		}
+		if (StringUtils.isBlank(model.getSkills())) {
+			addActionError("Skills are empty");
+			error = false;
+		}
+	
+
+		if (StringUtils.isBlank(model.getCmpEmail())) {
+			addActionError( "Company email is empty");
+			error = false;
+		}
+		if (!model.getCmpEmail().matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+
+			addActionError(getText("error.invalid.option", new String[]{getText("CompanyMail"),model.getCmpEmail()}));
+			addActionError( " email format :should be like : user123@example.xxx");
+			error = false;
+		}
+
+
+		if (StringUtils.isBlank(model.getJobLevel())) {
+			addActionError( "Job level is empty");
+			error = false;
+		}
+
+		if (StringUtils.isBlank(model.getExperience())) {
+			addActionError( "Experience is empty");
+			error = false;
+		}
+
+		if (StringUtils.isBlank(model.getLocations())) {
+			addActionError( "Location is empty");
+			error = false;
+		}
+
+		if (model.getJobDescription().length() > 2000) {
+			addActionError( "Job description exceeds the maximum length of 2000 characters");
+			error = false;
+		}
+		return error;
+
+	}
+	@Override
+	public JobModel getModel() {
+		return model;
+	}
+
+	@Override
+	public String execute() {
+		return null;
+	}
+
+	@Override
+	public void prepare() throws Exception {
+		model = new JobModel();
+		modelValue = new JobModelValue();
+
+	}
+
+	@Override
+	public void setSession(Map<String, Object> session) {
+
+		this.session = session;
+	}
+
+}
+

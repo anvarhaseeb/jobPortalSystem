@@ -1,0 +1,9 @@
+
+à	java:S116"URename this field "skill_name" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.b de75c69e85284a90c0644271c19f3fcbh
+Å	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.b 2524d209b125ff443b539a239bf8269bh
+Ü	java:S116"SRename this field "skill_id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.b d38d4c395846ba5367acc27e08bc248dh
+Ñ	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.b d38d4c395846ba5367acc27e08bc248dh
+Ñ	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.b de75c69e85284a90c0644271c19f3fcbh
+Å	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.b 067e0b59124792f418e2f1dd77643908h
+Å	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.b c408d701250d710a2a18b714013b1124h
+Å	java:S100	"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.b b2dd1e26c80a13caafbd7c7d61b15ddbh

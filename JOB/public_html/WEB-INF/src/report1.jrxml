@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b9216179-6110-49e4-9a0d-2cd96fc2bd12">
+	<property name="ireport.zoom" value="0.8264462809917359"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\anvar\\Desktop\\Project\\job\\JOB\\public_html\\WEB-INF\\src\\"]]></defaultValueExpression>
+	</parameter>
+	<field name="jobList" class="java.util.List"/>
+	<field name="cmpName" class="java.lang.String"/>
+	<field name="cmpWebsite" class="java.lang.String"/>
+	<field name="postingDate" class="java.lang.String"/>
+	<field name="locations" class="java.lang.String"/>
+	<variable name="cmpName_1" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{cmpName}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="66" backcolor="#FCFDFD" uuid="11fe4cc7-de18-4fb5-9838-2263bc15fd3d"/>
+			</frame>
+			<textField>
+				<reportElement x="0" y="0" width="555" height="66" forecolor="#0000FF" uuid="36bc67a2-5d0d-487d-b234-25d3f0fb03d7"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{JPS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="35" backcolor="#FCFDFD" uuid="35bfacfa-0cb0-4635-b97b-7201134f7d68"/>
+			</frame>
+			<image>
+				<reportElement x="0" y="0" width="135" height="35" uuid="f1f59fe3-0596-4c0a-9847-f3bab9177777"/>
+				<imageExpression><![CDATA["C:\\Users\\anvar\\Downloads\\JPS.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="35" uuid="763d3f12-9e0d-4e4f-9256-1453909b39fa"/>
+				<textFieldExpression><![CDATA[$R{invoice}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="81" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="77" backcolor="#FCFDFD" uuid="688a5f27-16e0-47c2-a2b3-6aec33f9d694"/>
+			</frame>
+			<textField>
+				<reportElement x="100" y="20" width="129" height="20" uuid="314dc459-878a-41ee-8c56-eb995f54ba55"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cmpName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="41" width="129" height="20" uuid="c3ce1f61-df3a-4b82-8348-f52503353d1a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cmpWebsite}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="61" width="100" height="20" uuid="a0bf04f6-f0d9-4b07-9139-1613c32c6d09"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{postingDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="61" width="129" height="20" uuid="d74b70dd-c922-4800-a3ae-a28c5d62c0c5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{locations}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="100" height="20" uuid="72dfb37b-c9d5-4117-b9b5-9705e51e3dc9"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Company}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="41" width="100" height="20" uuid="a0168dab-cfc0-45be-8a25-cd6d25cc6433"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Website}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="61" width="100" height="20" uuid="3847933f-09d0-450e-b3f4-fd5c8583b459"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{Location}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="355" y="61" width="100" height="20" uuid="32739cef-8c26-45d1-8f9d-57f31b8ce3c5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{POD}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="126" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="125" uuid="60c10671-5215-43f8-bdd0-c7f35fdc988f"/>
+				<subreportParameter name="REPORT_LOCALE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{jobList})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<textField>
+				<reportElement x="475" y="0" width="80" height="50" uuid="b7a22611-849b-4381-8a0e-fb6ecf84d6d4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd MMMMM yyyy">
+				<reportElement x="0" y="0" width="110" height="50" uuid="b2ebb64f-cbbb-44f2-b1a4-df8ebede04de"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

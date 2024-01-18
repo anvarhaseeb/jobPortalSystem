@@ -1,0 +1,29 @@
+# Bundle_ja_JP.properties
+JPS=SYSTEME DE PORTAIL D'EMPLOI
+invoice=Facture des Candidatures
+Company=Nom de l'Entreprise
+Website=Site Web
+Location=Emplacement
+POD=Date de Publication
+JobTitle=Titre du Poste
+JobType=Type d'Emploi
+JobDetails=Détails-de-l'Emploi
+CTC=Salaire Brut Annuel (CTC)
+Skills=Compétences
+JobLevel=Niveau d'Emploi
+Experience=Expérience
+JobDescription=Description du Poste
+
+welcome.message=Bienvenue sur le PORTAIL DE L'EMPLOI!
+jobdescription.messages=Explorer par catégorie
+loading.content=Chargement du contenu
+jobsearch.message=Recherche d'emploi
+add.button=AJOUTER
+back.button=RETOUR
+search.button=Rechercher
+features.header=Features
+
+req.Name=Nom du demandeur
+CompanyMail=E-mail de l'entreprise
+job.Category=Catégorie d'emploi
+error.invalid.option = Invalid {0} Option : {1}

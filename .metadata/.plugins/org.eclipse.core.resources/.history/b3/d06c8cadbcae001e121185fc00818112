@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+   "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+   "https://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+	<constant value="true" name="struts.devMode" />
+	   <constant name="struts.custom.i18n.resources" value="com.job.bundle.Bundle" />
+	<package name="home" extends="struts-default">
+
+
+		<action name="homes" class="com.job.action.JobAction"
+			method="home">
+			<result name="success">Job.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		<action name="home" class="com.job.action.JobAction"
+			method="home">
+			<result name="success">Job.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		<action name="signOut" class="com.job.action.JobAction"
+			method="signOut">
+			<result name="success">SignOut.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+
+		<action name="searchPage" class="com.job.action.JobAction"
+			method="searchPage">
+			<result name="success">Search.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+
+		<action name="addPage" class="com.job.action.JobAction"
+			method="addPage">
+			<result name="success">JobPost.jsp</result>
+			<result name="error">error.jsp</result>
+
+		</action>
+
+		<action name="toEditPage" class="com.job.action.JobAction"
+			method="editPage">
+			<result name="success">JobPost.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+
+		<action name="actionNames" class="com.job.action.JobAction"
+			method="action">
+			<result name="success">Search.jsp</result>
+			<result name="Edit">JobList.jsp</result>
+			<result name="error">error.jsp</result>
+			<result name="input">JobPost.jsp</result>
+			
+		</action>
+
+
+		<action name="search" class="com.job.action.JobAction"
+			method="search">
+			<result name="success">JobList.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+
+		<action name="jobDelete" class="com.job.action.JobAction"
+			method="jobDelete">
+			<result name="success">JobList.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		
+		<action name="viewPages" class="com.job.action.JobAction"
+			method="viewPage">
+			<result name="success">ViewJob.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+		<action name="cancel" class="com.job.action.JobAction"
+			method="cancel">
+			<result name="success">JobList.jsp</result>
+			<result name="error">error.jsp</result>
+		</action>
+
+	
+		
+		 <action name="reportDownload" class="com.job.action.JobAction" method="reportDownload">
+			<result name="error">error.jsp</result>
+			</action>
+	
+		
+	</package>
+</struts>
